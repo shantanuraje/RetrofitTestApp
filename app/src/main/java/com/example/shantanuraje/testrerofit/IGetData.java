@@ -4,6 +4,6 @@ import retrofit.Callback;
 import retrofit.http.GET;
 
 public interface IGetData {
-    @GET("/")
+    @GET("/players")
     void testConnection(Callback<String> dataCallback);
 }

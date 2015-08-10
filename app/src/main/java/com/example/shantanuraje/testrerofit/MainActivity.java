@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("TAG","failure" +error.getUrl());
+                Log.d("TAG","failure " +error);
             }
         };
         getDataRestAdapter=new GetDataRestAdapter();

@@ -35,7 +35,13 @@ public class GetDataRestAdapter {
     public void testServerConnection(Callback<String> callback){
         getData.testConnection(callback);
     }
-
+/*http://stackoverflow.com/questions/10239969/using-gson-giving-error-expected-begin-array-but-was-string
+http://stackoverflow.com/questions/28645822/retrofit-android-can-i-download-json-object-to-string-without-parsing
+http://stackoverflow.com/questions/21881943/how-can-i-return-string-or-jsonobject-from-asynchronous-callback-using-retrofit/22820153#22820153
+http://stackoverflow.com/questions/22325641/retrofit-callback-get-response-body
+http://stackoverflow.com/questions/16615038/what-is-the-shortcut-to-auto-import-all-in-android-studio
+http://stackoverflow.com/questions/21881943/how-can-i-return-string-or-jsonobject-from-asynchronous-callback-using-retrofit
+http://square.github.io/retrofit/javadoc/retrofit/converter/Converter.html*/
     static class StringConverter implements Converter {
 
         @Override

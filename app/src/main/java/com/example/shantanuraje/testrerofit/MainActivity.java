@@ -25,7 +25,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     }
-    void updateUXWithWeatherData (String data) {
+    void updateUXWithData(String data) {
         tvText.setText(data);
     }
     @Override
@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void success(String s, Response response) {
                 Log.d("TAG", "success" + s);
 //                data=s;
-                updateUXWithWeatherData(s);
+                updateUXWithData(s);
             }
 
             @Override

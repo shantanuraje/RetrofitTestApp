@@ -22,12 +22,40 @@ http.createServer(function(request,response){
                 response.end(temp)
 //                });
             } else{
-                console.log("Failure")
+                console.log("Failure to read from db")
                 console.log(err);
             }
 //        response.end();
         });
-    }else{
+    }
+    else if(request.method == 'POST' ){
+        console.log("this is login test")
+//        String username="p1ayer1",password=""
+        players.view('example','foo',function(err, body) {
+        if (!err) {
+                console.log(body)
+                if (request.url === "/login") {
+                      var requestBody = '';
+                      request.on('data', function(data) {
+                        requestBody += data;
+                      });
+                      request.on('end', function() {
+                        console.log(body)
+                      });
+                    temp=JSON.serialize(body)
+                    temp=temp.rows
+                    temp=JSON.stringify(temp)
+                response.end(temp)
+                    } 
+//                });
+            } else{
+                console.log("Failure to read from db")
+                console.log(err);
+            }
+//        response.end();
+        });        
+    }
+    else{
         response.end("Invalid");
     }
     //response.end("Enquiry Received");

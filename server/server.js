@@ -23,15 +23,8 @@ http.createServer(function(request,response){
                 var tempUsername="player1", tempPassword="";
                 request.on('end',function(){
                     console.log("Login Request Data:  " + requestData)
-                    temp=checkUserExists(tempUsername);
-                    console.log("in server part :   "+typeof(temp))
-                    console.log("in server part :   "+JSON.stringify(temp))
-                    
-                    if(temp!=null){
-                        console.log("login success:  "+"username is: "+temp.key+" and doc id is: "+temp.id)
-                    }else{
-                        console.log("login failed")
-                    }
+                    checkUserExists(tempUsername)
+
                     response.end("END OF RESPONSE")
                 });
             }
@@ -41,7 +34,7 @@ http.createServer(function(request,response){
 console.log('Listening on ::8080');
             
 var tempObj=new objModel();            
-function checkUserExists(username){
+function checkUserExists(username,checkUserP){
     console.log("initial model: "+ JSON.stringify(tempObj))
     console.log("username:  "+username)        
     players.view('example','foo',function(err, body) {
@@ -59,7 +52,6 @@ function checkUserExists(username){
                 }
             }
            console.log("modified object outside the for:"+JSON.stringify(tempObj))
-//           return tempObj;            
     
          
         }else{
@@ -68,10 +60,22 @@ function checkUserExists(username){
         }
      
             console.log("modified object inside the view:  "+JSON.stringify(tempObj))
-//        return [JSON.stringify(tempObj)]    
-
+//        return tempObj    
+        checkUserPass(tempObj)    
     });
     console.log("modified object outside view  "+JSON.stringify(tempObj))
 //    return tempObj;
 //    return tempObj1;
+}
+
+function checkUserPass(tempObj){
+    console.log("this is whjat i received  :   "+ JSON.stringify(tempObj) )
+    console.log("in server part :   "+typeof(tempObj))
+    console.log("in server part :   "+JSON.stringify(tempObj))
+
+    if(tempObj!=null){
+        console.log("login success:  "+"username is: "+tempObj.key+" and doc id is: "+tempObj.id)
+    }else{
+        console.log("login failed")
+    }                                          
 }

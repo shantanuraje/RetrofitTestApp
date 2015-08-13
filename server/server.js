@@ -1,65 +1,77 @@
 var http = require('http'),
 nano = require('nano')('http://127.0.0.1:5984/'),
-players = nano.use('players'),
-enquiryDataObj="";
+players = nano.use('players');
 
-var nodeCouchDB = require("node-couchdb");
-var couch = new nodeCouchDB("127.0.0.1", 5984);
-var couch = require("node-couchdb");
-var nodeCouchDB = require("node-couchdb");
-var couch = new nodeCouchDB("127.0.0.1", 5984);
+function objModel(id,value,key){
+        this.id=id;
+        this.value=value;
+        this.key=key;
+}
 
 http.createServer(function(request,response){
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    console.log(request.url)
-    if(request.url=="/players"){
-        players.view('example','foo',function(err, body) {
-        if (!err) {
-//            console.log(body)
-//            body.rows.forEach(function(doc) {
-//                console.log(doc);
-            temp=JSON.stringify(body)
-                response.end(temp)
-//                });
-            } else{
-                console.log("Failure to read from db")
-                console.log(err);
+    switch(request.method){
+        case 'GET':
+            break;
+        case 'POST':
+            if(request.url=='/login'){
+                requestData=''
+                console.log("Login")
+                request.on('data',function(data){
+                    requestData+=data
+                });//consider request data is username and password
+                var tempUsername="player1", tempPassword="";
+                request.on('end',function(){
+                    console.log("Login Request Data:  " + requestData)
+                    temp=checkUserExists(tempUsername);
+                    console.log("in server part :   "+typeof(temp))
+                    console.log("in server part :   "+JSON.stringify(temp))
+                    
+                    if(temp!=null){
+                        console.log("login success:  "+"username is: "+temp.key+" and doc id is: "+temp.id)
+                    }else{
+                        console.log("login failed")
+                    }
+                    response.end("END OF RESPONSE")
+                });
             }
-//        response.end();
-        });
+            break;
     }
-    else if(request.method == 'POST' ){
-        console.log("this is login test")
-//        String username="p1ayer1",password=""
-        players.view('example','foo',function(err, body) {
-        if (!err) {
-                console.log(body)
-                if (request.url === "/login") {
-                      var requestBody = '';
-                      request.on('data', function(data) {
-                        requestBody += data;
-                      });
-                      request.on('end', function() {
-                        console.log(body)
-                      });
-                    temp=JSON.serialize(body)
-                    temp=temp.rows
-                    temp=JSON.stringify(temp)
-                response.end(temp)
-                    } 
-//                });
-            } else{
-                console.log("Failure to read from db")
-                console.log(err);
-            }
-//        response.end();
-        });        
-    }
-    else{
-        response.end("Invalid");
-    }
-    //response.end("Enquiry Received");
-    //       response.write("");
 }).listen(8080,'0.0.0.0');
-
 console.log('Listening on ::8080');
+            
+var tempObj=new objModel();            
+function checkUserExists(username){
+    console.log("initial model: "+ JSON.stringify(tempObj))
+    console.log("username:  "+username)        
+    players.view('example','foo',function(err, body) {
+        if (!err) {
+//            console.log(typeof(body))
+            temp=body.rows
+            
+            for(i=0;i<temp.length;i++){
+                console.log("Loop count: "+i+" of "+ temp.length )
+                if(temp[i].key==username){
+                    tempObj=temp[i]
+                    console.log("modified object inside the auth if:"+JSON.stringify(tempObj))
+//                    return tempObj;
+                    break;
+                }
+            }
+           console.log("modified object outside the for:"+JSON.stringify(tempObj))
+//           return tempObj;            
+    
+         
+        }else{
+            console.log("Failure to read from db")
+            console.log(err);
+        }
+     
+            console.log("modified object inside the view:  "+JSON.stringify(tempObj))
+//        return [JSON.stringify(tempObj)]    
+
+    });
+    console.log("modified object outside view  "+JSON.stringify(tempObj))
+//    return tempObj;
+//    return tempObj1;
+}
